@@ -17,6 +17,7 @@ import java.util.Scanner;
  * @author thoma
  */
 public class Promotion extends Observable{
+    private static String numEtuModified;
     private static ArrayList<Etudiant> listeEtudiant= new ArrayList<>();
 
     public Promotion() {
@@ -104,12 +105,34 @@ public class Promotion extends Observable{
     return null;
     }
     
+    public void setChangedStatement(){
+        setChanged();
+        notifyObservers();
+    }
+    
     @Override
     public String toString() {
         return "Promotion{" + "listeEtudiant=" + listeEtudiant + '}';
     }
+
+    public static void setNumEtuModified(String numEtuModified) {
+        Promotion.numEtuModified = numEtuModified;
+    }
+
+    public static String getNumEtuModified() {
+        return numEtuModified;
+    }
     
-    
-    
+    public void sortList(){
+        Collections.sort(listeEtudiant, new Comparator<Etudiant>() {
+            @Override
+            public int compare(Etudiant e1, Etudiant e2) {
+                return e1.getNum().compareTo(e2.getNum());
+            }
+        });
+        setChanged();
+        notifyObservers();
+
+    }
 
 }

@@ -72,6 +72,7 @@ public class ControleurFormAdd {
         
         System.out.println("Etudiant ajouté !");
         
+        Promotion.setNumEtuModified(null);
         return true;
     }
 }

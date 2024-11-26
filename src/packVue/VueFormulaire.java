@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import packControleur.ControleurFormAdd;
 import packControleur.ControleurFormDelete;
 import packControleur.ControleurDeleteList;
+import packControleur.ControleurModifiedStudent;
 import packModele.Etudiant;
 import packModele.Promotion;
 
@@ -41,6 +42,7 @@ public class VueFormulaire extends AbstractVue {
     private final JLabel lblSeparation = new JLabel("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
     private final JButton btAjout = new JButton("Ajout");
     private final JButton btSuppr = new JButton("Supprimer");
+    private final JButton btModifier = new JButton("Modifier");
     
     private ArrayList<Etudiant> listeEtudiants = Promotion.getListeEtudiant();
     
@@ -57,9 +59,11 @@ public class VueFormulaire extends AbstractVue {
         
         btAjout.addActionListener(new EcouteurFormAjouter());
         btSuppr.addActionListener(new EcouteurFormSupprimer());
+        btModifier.addActionListener(new EcouteurModifier());
     }
 
     private void initFrame() {
+        
         //remplissage des box
         boxDpt.addItem("- - -");
         for (int i = 1; i < 96; i++) {
@@ -119,6 +123,12 @@ public class VueFormulaire extends AbstractVue {
         this.add(lblEspace, gc);
         gc.gridx = 11;
         this.add(btAjout, gc);
+        
+        gc.gridx = 11;
+        gc.gridy = 0;
+        this.add(btModifier, gc);
+        btModifier.setEnabled(false);
+        
         gc.gridx = 0;
         gc.gridy = 2;
         gc.gridwidth = 11;
@@ -188,6 +198,57 @@ public class VueFormulaire extends AbstractVue {
             }
             
         }
+    }
+    
+    public void remplirFormulaire(Etudiant etu) {
+        txtNumeroAjout.setText(etu.getNum());
+        txtNom.setText(etu.getNom());
+        txtPrenom.setText(etu.getPrenom());
+        boxDpt.setSelectedItem(etu.getDepartement());
+        String bacModified;
+        
+        switch (etu.getBac()) {
+            case "G":
+                bacModified = "General";
+                break;
+            case "T":
+                bacModified = "Techno";
+                break;
+            case "Pro":
+                bacModified = "Pro";
+                break;
+            case "A":
+                bacModified = "Autre";
+                break;
+            default:
+                throw new AssertionError();
+        }
+        
+        boxBac.setSelectedItem(bacModified);
+}
+    
+    private class EcouteurModifier implements ActionListener {
+    @Override
+        public void actionPerformed(ActionEvent e) {
+            
+            
+            
+            ArrayList<String> listValue = new ArrayList<>();
+            listValue.add(txtNumeroAjout.getText());
+            listValue.add(txtNom.getText());
+            listValue.add(txtPrenom.getText());
+            listValue.add((String) boxBac.getSelectedItem());
+            listValue.add((String) boxDpt.getSelectedItem());
+
+            if(ControleurModifiedStudent.modifiedStudent(listValue, promo)){
+                clearForm();
+            }
+            setBtModified(false);
+        }
+    }
+    
+    public void setBtModified(boolean bool){
+        btModifier.setEnabled(bool);
     }
 
 }

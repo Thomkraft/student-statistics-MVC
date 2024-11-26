@@ -47,6 +47,27 @@ public class Etudiant {
     public String toString() {
         return num + " - " + nom + prenom + "(" + departement + ")";
     }
+
+    public void setNum(String num) {
+        this.num = num;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public void setBac(String bac) {
+        this.bac = bac;
+    }
+
+    public void setDepartement(String departement) {
+        this.departement = departement;
+    }
+    
     
     
 }

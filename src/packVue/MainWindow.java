@@ -41,7 +41,7 @@ public class MainWindow extends JFrame{
         histo.setLocation(camemb.getWidth(), form.getHeight());
         
         //vue liste
-        liste=new VueListe(promo);
+        liste=new VueListe(promo, form);
         this.add(liste);
         liste.setTitle("Liste des étudiants");
         liste.setLocation(camemb.getWidth()+histo.getWidth(), 0);
