@@ -31,7 +31,7 @@ public class VueListe extends AbstractVue implements Observer{
     private ControleurDeleteList controleurSuppressionListe;
 
     
-    public VueListe(Promotion promo) {
+    public VueListe(Promotion promo, VueFormulaire form) {
        
         this.promo = promo;
         
@@ -64,6 +64,27 @@ public class VueListe extends AbstractVue implements Observer{
         this.pack();
         
         btSuppr.addActionListener(new EcouteurSuppr());
+        
+        liste.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (e.getClickCount() == 2) { // Double-clic détecté
+                    int index = liste.locationToIndex(e.getPoint());
+                    if (index >= 0) {
+                        String selectedValue = (String) liste.getModel().getElementAt(index);
+                        String num = extractNum(selectedValue);
+
+                        Etudiant etu = promo.recherche(num);
+                        if (etu != null) {
+                            // Appeler une méthode pour pré-remplir les champs du formulaire
+                            form.remplirFormulaire(etu);
+                            Promotion.setNumEtuModified(etu.getNum());
+                            form.setBtModified(true);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void remplissageListe() {
@@ -114,5 +135,8 @@ public class VueListe extends AbstractVue implements Observer{
         String[] parts = value.split(" - ");
         return parts[0];
     }
+    
+    
+    
     
 }
